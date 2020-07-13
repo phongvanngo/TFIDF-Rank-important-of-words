@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <title>TextToMatrix</title>
+  <script type="text/javascript" src="js/ButtonResult.js"></script>
+  <style>
+    div.dictionary-area {
+      background-color: lightblue;
+      height: 450px;
+      width: 100%;
+      overflow-y: scroll;
+    }
+
+    div.dictionary-areaa {
+      background-color: lightblue;
+      height: 450px;
+      width: 100%;
+      overflow-y: scroll;
+      overflow-x: scroll;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+  </script>
+
+  <!-- navbar------------------------- -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="margin-bottom:2em" ;">
+    <a class="navbar-brand" href="#">TÍNH TOÁN TF-IDF </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link " href="#">PROJECT MÔN CẤU TRÚC DỮ LIỆU VÀ GIẢI THUẬT</a>
+        <a class="nav-item nav-link " href="#">Ngô Văn Phóng</a>
+        <a class="nav-item nav-link " href="#">Nguyễn Thế Đạt</a>
+      </div>
+    </div>
+  </nav>
+  <!-- ------------------------------------------------------------ -->
+  <!-- input form -->
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- output form -->
+
+  <!-- ------------------------------------------------------------ -->
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- input area------------------------------- -->
+      <div class="col-6">
+        <div class="row-1">
+          <form>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">
+                <span class="badge badge-warning">Văn bản đầu vào (thích hợp với tiếng anh)</span>
+              </label>
+              <textarea class="form-control" id="input-area" rows="21"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="row-1">
+          <label style="margin-right: 1em;">Words:
+            <span class="badge badge-info" id="total_words_label">0</span></label>
+          <label>Documents:
+            <span class="badge badge-info" id="num_documents_label">0</span></label>
+          <button onclick="OnclickButtonResult()" type="button" class="btn btn-success float-right transfer">
+            Result
+          </button>
+        </div>
+      </div>
+      <!-- dictionary ------------------------------- -->
+      <div class="col-3">
+        <label for="">
+          <span class="badge badge-info">Bộ từ điển đầy đủ</span>
+        </label>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th width="10%" scope="STT">#</th>
+              <th width="60%" scope="vocabulary" id="amount_word">
+                vocabulary
+              </th>
+              <th width="30%" scope="voc">IDF</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="dictionary-area" id="dictionary_area">
+          <table class="table">
+            <tbody id="list_word"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-3">
+        <!-- dicionary with no stop words ------------------------------- -->
+        <label for="">
+          <span class="badge badge-info">Bộ từ điển của văn bản đã loại bỏ stopwords</span>
+        </label>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th width="10%" scope="STT">#</th>
+              <th width="60%" scope="vocabulary" id="amount_word_no_stopwords">
+                vocabulary
+              </th>
+              <th width="30%" scope="voc">IDF</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="dictionary-area" id="dictionary_area">
+          <table class="table">
+            <tbody id="list_word_no_stopwords"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br>
+    <h2>XẾP HẠNG TF-IDF</h1>
+      <br>
+      <!-- detail rank tf idf ------------------------------------------ -->
+      <div class="row">
+        <div class="col-6">
+          <label>
+            <span class="badge badge-warning">Bảng xếp hạng TF-IDF của các từ</span>
+          </label>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th width="10%" scope="STT">#</th>
+                <th width="60%" scope="vocabulary" id="amount_word_no_stopwords">
+                  vocabulary
+                </th>
+                <th width="30%" scope="voc">TF-IDF</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="dictionary-area">
+            <table class="table">
+              <tbody id="word_rank"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-6">
+          <label>
+            <span class="badge badge-warning">Bảng xếp hạng TF-IDF của các từ với văn bản đã loại bỏ stopwords</span>
+          </label>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th width="10%" scope="STT">#</th>
+                <th width="60%" scope="vocabulary" id="amount_word_no_stopwords">
+                  vocabulary
+                </th>
+                <th width="30%" scope="voc">TF-IDF</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="dictionary-area">
+            <table class="table">
+              <tbody id="word_rank_no_stopwords"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- detail frequency WORD------------------------------------------ -->
+      <br>
+      <h2>XẾP HẠNG TẦN SỐ XUẤT HIỆN CỦA TỪ TRONG VĂN BẢN</h1>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <label>
+              <span class="badge badge-warning">Bảng xếp hạng tần số của các từ</span>
+            </label>
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th width="10%" scope="STT">#</th>
+                  <th width="60%" scope="vocabulary" id="amount_word_no_stopwords">
+                    vocabulary
+                  </th>
+                  <th width="30%" scope="voc">Số lần xuất hiện</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="dictionary-area">
+              <table class="table">
+                <tbody id="frequency_rank"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-6">
+            <label>
+              <span class="badge badge-warning">Bảng xếp hạng tần số xuất hiện của các từ với văn bản đã loại bỏ
+                stopwords</span>
+            </label>
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th width="10%" scope="STT">#</th>
+                  <th width="60%" scope="vocabulary" id="amount_word_no_stopwords">
+                    vocabulary
+                  </th>
+                  <th width="30%" scope="voc">Số lần xuất hiện</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="dictionary-area">
+              <table class="table">
+                <tbody id="frequency_rank_no_stopwords"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <br>
+        <h2>BIỂU DIỄN VECTOR</h1>
+          <br>
+          <label>
+            <span class="badge badge-warning">Biểu diễn vector cho đoạn văn bản</span>
+          </label>
+          <table class="table dictionary-area">
+            <thead class="thead-dark">
+              <tr id="list_word_vector">
+                <th>dfsdfds</th>
+              </tr>
+            </thead>
+            <tbody id="list_word_tfidf"></tbody>
+          </table>
+  </div>
+</body>
+
+</html>
