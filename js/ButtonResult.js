@@ -1,3 +1,4 @@
+var statuss = 0;
 var text_input;
 var IDF = [];
 var IDF_no_stopwords = [];
@@ -305,7 +306,6 @@ function Frequency(word, documentt) {
 }
 
 function ClearData(s) {
-  console.log(s);
   var len = s.length;
   var str = s;
   var ii = 0;
@@ -317,7 +317,6 @@ function ClearData(s) {
       ii++;
     else str = str.replace(str[ii], "");
   }
-  console.log(str);
   return str;
 }
 
@@ -401,7 +400,8 @@ function DivideDocumentt() {
       if (clean !== "") {
         documentt[num_documentts] = original;
         clean_documentt[num_documentts] = clean.toLowerCase();
-        clean_documentt_no_stopwords[num_documentts] = clean_documentt[num_documentts];
+        clean_documentt_no_stopwords[num_documentts] =
+          clean_documentt[num_documentts];
         num_documentts++;
       }
     }
@@ -415,11 +415,11 @@ function DivideDocumentt() {
     if (clean !== "") {
       documentt[num_documentts] = original;
       clean_documentt[num_documentts] = clean.toLowerCase();
-      clean_documentt_no_stopwords[num_documentts] = clean_documentt[num_documentts];
+      clean_documentt_no_stopwords[num_documentts] =
+        clean_documentt[num_documentts];
       num_documentts++;
     }
   }
-  console.log(documentt, num_documentts);
 }
 
 function BuildDictionary() {
@@ -535,6 +535,8 @@ function SelectionSort(value, id) {
   }
 }
 
+
+
 function SortRankTFIDF() {
   // set rank for dictionary
   for (var i = 0; i < num_word_dictionary; i++) max_TFIDF_dictionary[i] = 0;
@@ -576,11 +578,12 @@ function PrintVector() {
     for (var j = 0; j < dictionary.size; j++)
       s = s + "<td>" + TFIDF[i][j].toFixed(2).toString() + "</td>";
     s = s + "</tr>";
-  };
+  }
   document.getElementById("list_word_tfidf").innerHTML = s;
 }
 
 function OnclickButtonResult() {
+  statuss = 1;
   total_word = 0;
   frequency_rank_no_stopwords = [];
   frequency_rank = [];
@@ -610,7 +613,40 @@ function OnclickButtonResult() {
   document.getElementById("total_words_label").innerHTML = total_word;
   document.getElementById("num_documents_label").innerHTML = num_documentts;
   //beside textarea-----
+}
 
+function Control(request) {
+  if (text_input !== document.getElementById("input-area").value) statuss = 0;
+
+
+
+  for (var i = statuss + 1; i <= request; i++) {
+
+    switch (i) {
+      case 1:
+        OnclickButtonResult();
+        break;
+      case 2:
+        OnclickButtonTFIDFRank();
+        break;
+      case 3:
+        OnclickButtonFrequencyRank();
+        break;
+      case 4:
+        ButtonTransformVector();
+        break;
+    }
+  }
+}
+
+function ButtonTransformVector() {
+  statuss = 4;
+  PrintVector();
+  window.scrollBy(0, 600);
+}
+
+function OnclickButtonTFIDFRank() {
+  statuss = 2;
   CalTFIDF();
   SortRankTFIDF();
   PrintRank(word_rank, dictionary, id_word_rank, "word_rank", 3);
@@ -621,6 +657,10 @@ function OnclickButtonResult() {
     "word_rank_no_stopwords",
     3
   );
+}
+
+function OnclickButtonFrequencyRank() {
+  statuss = 3;
   SortFrequency();
   PrintRank(frequency_rank, dictionary, id_frequency_rank, "frequency_rank", 0);
   PrintRank(
@@ -630,10 +670,4 @@ function OnclickButtonResult() {
     "frequency_rank_no_stopwords",
     0
   );
-
-}
-
-function ButtonTransformVector() {
-  PrintVector();
-  window.scrollBy(0, 600);
 }
