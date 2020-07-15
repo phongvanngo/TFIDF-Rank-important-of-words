@@ -618,8 +618,6 @@ function OnclickButtonResult() {
 function Control(request) {
   if (text_input !== document.getElementById("input-area").value) statuss = 0;
 
-
-
   for (var i = statuss + 1; i <= request; i++) {
 
     switch (i) {
