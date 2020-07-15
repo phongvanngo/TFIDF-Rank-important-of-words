@@ -305,6 +305,7 @@ function Frequency(word, documentt) {
 }
 
 function ClearData(s) {
+  console.log(s);
   var len = s.length;
   var str = s;
   var ii = 0;
@@ -316,6 +317,7 @@ function ClearData(s) {
       ii++;
     else str = str.replace(str[ii], "");
   }
+  console.log(str);
   return str;
 }
 
@@ -335,11 +337,7 @@ function AddWordToDictionary(word, dictionary) {
 }
 
 function SplitTheVocabulary() {
-  clean_documentt = documentt;
   for (var i = 0; i < num_documentts; i++) {
-    clean_documentt[i] = documentt[i].toLowerCase();
-    clean_documentt[i] = ClearData(clean_documentt[i]);
-    clean_documentt_no_stopwords[i] = clean_documentt[i];
     var doc = " " + clean_documentt[i] + " ";
     var len = doc.length;
     num_word_clean_documentt[i] = 0;
@@ -398,17 +396,30 @@ function DivideDocumentt() {
 
   while (k >= 0) {
     if (k != 0) {
-      documentt[num_documentts] = text_input.substring(0, k);
-      num_documentts = num_documentts + 1;
+      var original = text_input.substring(0, k);
+      var clean = ClearData(original);
+      if (clean !== "") {
+        documentt[num_documentts] = original;
+        clean_documentt[num_documentts] = clean.toLowerCase();
+        clean_documentt_no_stopwords[num_documentts] = clean_documentt[num_documentts];
+        num_documentts++;
+      }
     }
     text_input = text_input.slice(k + 1, text_input.length);
     k = text_input.indexOf(".");
   }
 
   if (text_input !== "") {
-    documentt[num_documentts] = text_input;
-    num_documentts = num_documentts + 1;
+    var original = text_input;
+    var clean = ClearData(original);
+    if (clean !== "") {
+      documentt[num_documentts] = original;
+      clean_documentt[num_documentts] = clean.toLowerCase();
+      clean_documentt_no_stopwords[num_documentts] = clean_documentt[num_documentts];
+      num_documentts++;
+    }
   }
+  console.log(documentt, num_documentts);
 }
 
 function BuildDictionary() {
