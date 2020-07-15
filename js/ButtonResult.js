@@ -291,9 +291,10 @@ function SortFrequency() {
   SelectionSort(frequency_rank, id_frequency_rank);
   SelectionSort(frequency_rank_no_stopwords, id_frequency_rank_no_stopwords);
 }
+
 function Frequency(word, documentt) {
-  var k = documentt.indexOf(word);
   documentt = " " + documentt + " ";
+  var k = documentt.indexOf(" " + word + " ");
   res = 0;
   while (k >= 0) {
     res++;
@@ -618,5 +619,10 @@ function OnclickButtonResult() {
     "frequency_rank_no_stopwords",
     0
   );
+
+}
+
+function ButtonTransformVector() {
   PrintVector();
+  window.scrollBy(0, 600);
 }
